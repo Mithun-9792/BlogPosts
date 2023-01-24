@@ -3,12 +3,15 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from "react-redux";
+import { get_auth, login } from "../redux/reducer";
+import swal from "sweetalert";
 
 const baseURL = "http://localhost:3030/";
 export default function LoginForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useSelector(get_auth);
   const [logindata, setlogindata] = useState({});
 
   useEffect(() => {
@@ -18,13 +21,14 @@ export default function LoginForm() {
       })
       .then((data) => {
         setlogindata(data);
-        // console.log(data);
+        console.log(data);
       })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
 
+  console.log(auth?.token, "auth token");
   ///Form Validation
   const schema = Yup.object().shape({
     Email: Yup.string().required("Email required!").email("Format Error!"),
@@ -43,9 +47,11 @@ export default function LoginForm() {
     // console.log(data1.token);
     let Token = data1.token;
     if (Token) {
-      localStorage.setItem("token", Token);
+      dispatch(login(data1));
+      // auth?.token;
       navigate(`/userhome`);
     } else {
+      swal("Warning!", "Wrong E-mail or Password", "warning");
       // toast.error("Wrong mail or password")
     }
   };

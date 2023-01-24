@@ -5,10 +5,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import JoditEditor from "jodit-react";
 import swal from "sweetalert";
+import { useSelector } from "react-redux";
+import { get_auth } from "../redux/reducer";
 
 const baseURL = "http://localhost:3030/";
 
 export default function CreatePost() {
+  const auth = useSelector(get_auth);
+
   //Validation.....
   const editorRef = React.useRef(null);
   const schema = Yup.object().shape({
@@ -24,29 +28,30 @@ export default function CreatePost() {
     formState: { errors },
   } = useForm(formresolver);
   const navigate = useNavigate();
-  const [post, setpost] = useState({});
-  const token = localStorage.getItem("token");
+  // const [post, setpost] = useState({});
+  const token = auth?.token;
   const [text, setText] = useState("");
 
-  useEffect(() => {
-    fetch(`${baseURL}`)
-      .then((res) => {
-        res.json();
-      })
-      .then((data) => {
-        setpost(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${baseURL}`)
+  //     .then((res) => {
+  //       res.json();
+  //     })
+  //     .then((data) => {
+  //       setpost(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //     });
+  // }, []);
 
   const handleonchange = (data) => {
     setText(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const onsubmit = async (data) => {
+    // console.log(data);
     var formdata = new FormData();
     formdata.append("image", data.image[0]);
     formdata.append("title", data.title);

@@ -4,6 +4,8 @@ import swal from "sweetalert";
 import Button from "./posts_assets/Button";
 import Comments from "./posts_assets/Comments";
 import PostInfo from "./posts_assets/PostInfo";
+import { useSelector } from "react-redux";
+import { get_auth } from "../redux/reducer";
 
 const baseURL = "http://localhost:3030/";
 
@@ -11,8 +13,8 @@ export default function UserPosts() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [post, setpost] = useState([]);
-  // const [comment, setcomment] = useState()
-  const token = localStorage.getItem("token");
+  const auth = useSelector(get_auth);
+  const token = auth?.token;
 
   const logindata = async (token) => {
     let data = await me(token);

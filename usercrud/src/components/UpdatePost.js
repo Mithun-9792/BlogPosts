@@ -5,12 +5,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import JoditEditor from "jodit-react";
 import * as Yup from "yup";
 import swal from "sweetalert";
+import { useSelector } from "react-redux";
+import { get_auth } from "../redux/reducer";
 
 const baseURL = "http://localhost:3030/";
 
 export default function UpdatePost() {
   const { slug } = useParams();
   const editorRef = React.useRef(null);
+  const auth = useSelector(get_auth);
   //Validation.....
   const schema = Yup.object().shape({
     title: Yup.string().required("Title is required field!"),
@@ -26,7 +29,7 @@ export default function UpdatePost() {
   } = useForm(formresolver);
   const navigate = useNavigate();
   const [post, setpost] = useState([]);
-  const token = localStorage.getItem("token");
+  const token = auth?.token;
   const [text, setText] = useState("");
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export default function UpdatePost() {
 
   const handleonchange = (data) => {
     setText(data);
-    console.log(data);
+    // console.log(data);
   };
 
   ///UpdatePost/////////
@@ -140,6 +143,7 @@ export default function UpdatePost() {
                               {...register("image")}
                               className={`form-control form-control-lg`}
                               type="file"
+                              // defaultValue={p.image}
                             />
                           </div>
                         </div>

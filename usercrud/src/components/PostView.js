@@ -5,16 +5,18 @@ import Comments from "./posts_assets/Comments";
 import AddComment from "./posts_assets/AddComment";
 import Button from "./posts_assets/Button";
 import swal from "sweetalert";
+import { useSelector } from "react-redux";
+import { get_auth } from "../redux/reducer";
 
 const baseURL = "http://localhost:3030/";
 export default function PostView() {
   const [posts, setPosts] = useState(null);
   const [user, setUser] = useState();
   const [addedCommentToken, setAddedCommentToken] = useState("");
-  // const [show, setShow] = useState(false);
+  const auth = useSelector(get_auth);
   const { slug } = useParams();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = auth?.token;
 
   const fetchingPost = async () => {
     await fetch(`${baseURL}posts/${slug}`)
@@ -63,6 +65,26 @@ export default function PostView() {
     }
   }
 
+  //Delete Post
+  // const deletepost = (id) => {
+  //   fetch(`${baseURL}posts/${id}`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   }).then((data) => {
+  //     console.log(data);
+  //   });
+  //   setPosts(
+  //     posts.filter((post) => {
+  //       // console.log(post.id);
+  //       return post.id !== id;
+  //     })
+  //   );
+  //   // toast.error("Deleted Successfully!")
+  //   swal("Deleted", "Post Deleted", "error");
+  // };
+
   useEffect(() => {
     fetchingPost();
     userdata();
@@ -102,6 +124,13 @@ export default function PostView() {
                 name={posts[0].name}
                 description={posts[0].description}
               />
+              {/* <Button
+                className="btn btn-danger btn-md mx-3"
+                onClick={() => {
+                  deletepost(posts[0].id);
+                }}
+                title={"Delete Post"}
+              /> */}
               <Comments
                 postId={posts[0].id}
                 addedCommentToken={addedCommentToken}

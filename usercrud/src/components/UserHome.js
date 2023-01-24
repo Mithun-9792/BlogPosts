@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import TypeWriter from "./UserHome/TypeWriter";
-// import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { get_auth } from "../redux/reducer";
 
 const baseURL = "http://localhost:3030/";
 
 export default function UserHome() {
   const [user, setuser] = useState();
-  const token = localStorage.getItem("token");
+  const auth = useSelector(get_auth);
+  const token = auth?.token;
 
   const logindata = async (token) => {
     let data = await me(token);
@@ -42,8 +44,8 @@ export default function UserHome() {
       className="border border-warning"
     >
       <div className="container">
-        <h2> Welcome {user.name}😎 </h2>
-      </div>
+        <h2> Welcome {user.name}😎 </h2>{" "}
+      </div>{" "}
       <div
         className="container "
         style={{
@@ -60,8 +62,8 @@ export default function UserHome() {
           text={
             "I hope you are well. Your welcome you login here, now you can start your journey with us. <br /> You can create your posts and see other people's posts and enjoy content"
           }
-        />
-      </div>
+        />{" "}
+      </div>{" "}
       <div
         className="container"
         style={{
@@ -77,8 +79,8 @@ export default function UserHome() {
           text={"EXPLORE CONNECT<br />LIVE"}
           delay={100}
           deleteSpeed={545}
-        />
-      </div>
+        />{" "}
+      </div>{" "}
     </div>
   );
 }

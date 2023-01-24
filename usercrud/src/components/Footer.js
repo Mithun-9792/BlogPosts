@@ -15,7 +15,7 @@ export default function Footer() {
           © 2023 Copyright :
           <a className="text-light" href="/" style={{ textDecoration: "none" }}>
             {" "}
-            CRUD.com
+            BlogPost.com
           </a>
         </div>
       </footer>

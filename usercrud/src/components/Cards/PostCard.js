@@ -25,10 +25,11 @@ export default function PostCard(props) {
             Updated at <b>{new Date(updated_at).toDateString()}</b>{" "}
           </p>
           <p
+            id="card-image"
             className="card-text "
             style={{
               display: "-webkit-box",
-              WebkitLineClamp: "7",
+              WebkitLineClamp: "5",
               overflow: "hidden",
               WebkitBoxOrient: "vertical",
             }}

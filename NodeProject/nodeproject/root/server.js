@@ -172,7 +172,11 @@ app.get("/me/:id", auth_token, (req, res) => {
             if (err) {
                 res.send(err);
             } else {
-                res.send(result);
+                if (result.length > 0) {
+                    res.send(result)
+                } else {
+                    res.send("Please authenticate valid token!")
+                }
             }
         }
     );
@@ -195,7 +199,7 @@ const storage = multer.diskStorage({
         cb(null, './uploads')
     },
     filename: function(req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         cb(null, file.originalname)
     }
 })
@@ -413,16 +417,16 @@ app.get("/commentsbyid/:id", (req, res) => {
 
 app.put("/comments/:id", auth_token, jsonparser, (req, res) => {
     let comment_id = req.params.id
-    let updated_comment = req.body.updatedcomment -
+    let updated_comment = req.body.updatedcomment
 
-        connection.query(`UPDATE comments SET comments.comments = '${updated_comment}', comments.UpdatedAt = NOW() WHERE comments.id = '${comment_id}' AND comments.user_id = '${req.Userid}'`,
-            (err, result) => {
-                if (err) {
-                    res.send(err)
-                } else {
-                    res.send(result)
-                }
-            })
+    connection.query(`UPDATE comments SET comments.comments = '${updated_comment}', comments.UpdatedAt = NOW() WHERE comments.id = '${comment_id}' AND comments.user_id = '${req.Userid}'`,
+        (err, result) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send(result)
+            }
+        })
 })
 
 // Delete comment using Comment Id

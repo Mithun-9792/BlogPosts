@@ -2,16 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "./posts_assets/Button";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/reducer";
+import { useSelector } from "react-redux";
+import { get_auth } from "../redux/reducer";
 
 const baseURL = "http://localhost:3030/";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const [user, setuser] = useState();
-  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const auth = useSelector(get_auth);
+  const token = auth?.token;
 
-  const logout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = () => {
+    dispatch(logout());
     navigate("/login");
   };
 
@@ -79,7 +85,7 @@ export default function Navbar() {
               <div className="d-flex">
                 <Button
                   className="btn btn-outline-warning"
-                  onClick={logout}
+                  onClick={() => handleLogout()}
                   title="Logout"
                 />
               </div>
