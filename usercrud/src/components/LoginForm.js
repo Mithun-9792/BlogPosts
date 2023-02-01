@@ -12,23 +12,24 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector(get_auth);
-  const [logindata, setlogindata] = useState({});
+  // const [logindata, setlogindata] = useState({});
 
-  useEffect(() => {
-    fetch(`${baseURL}`)
-      .then((res) => {
-        res.json();
-      })
-      .then((data) => {
-        setlogindata(data);
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${baseURL}`)
+  //     .then((res) => {
+  //       res.json();
+  //     })
+  //     .then((data) => {
+  //       setlogindata(data);
+  //       console.log(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //     });
+  // }, []);
 
-  console.log(auth?.token, "auth token");
+  // console.log(auth?.token, "auth token");
+
   ///Form Validation
   const schema = Yup.object().shape({
     Email: Yup.string().required("Email required!").email("Format Error!"),
@@ -44,11 +45,11 @@ export default function LoginForm() {
 
   const onSubmit = async (data) => {
     let data1 = await loginUser(data);
-    // console.log(data1.token);
     let Token = data1.token;
+    console.log(Token, "token");
+    // auth?.token;
     if (Token) {
       dispatch(login(data1));
-      // auth?.token;
       navigate(`/userhome`);
     } else {
       swal("Warning!", "Wrong E-mail or Password", "warning");
@@ -66,7 +67,11 @@ export default function LoginForm() {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
-    }).then((data) => data.json());
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        swal("Warning!", "Wrong E-mail or Password", "warning");
+      });
   }
 
   return (

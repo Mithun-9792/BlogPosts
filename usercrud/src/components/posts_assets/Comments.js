@@ -103,10 +103,11 @@ export default function Comments(props) {
     <>
       <p className="card-text">Comments:</p>
       {comments &&
-        comments.map((comment, index) => {
+        comments.map((comment) => {
+          // console.log(comment);
           return (
-            <>
-              <div className="d-inline-flex" key={index}>
+            <div key={comment.id}>
+              <div className="d-inline-flex">
                 <p>
                   <b>{comment.user_name}</b> commented on post at{" "}
                   {new Date(comment.commentAt).toDateString()} <br /> "
@@ -152,7 +153,7 @@ export default function Comments(props) {
                 )}
               </div>
               <hr className="mx-n10" />
-            </>
+            </div>
           );
         })}
     </>
